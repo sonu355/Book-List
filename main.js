@@ -45,6 +45,18 @@ function deleteBooks(el){
         el.parentElement.parentElement.remove()
     }
 }
+
+function showAlert(message, className){
+    const div = document.createElement('div')
+    div.className = `alert alert-${className}`
+    div.appendChild(document.createTextNode(message))
+    const container = document.querySelector('.container')
+    const form = document.querySelector('#book-form')
+    container.insertBefore(div,form)
+    //vanish in 3 sec
+    setTimeout(() => document.querySelector('.alert').remove(),3000)
+}
+
 function clearField() {
     document.querySelector('#title').value = ''
     document.querySelector('#author').value = ''
@@ -62,15 +74,27 @@ document.querySelector('#book-form').addEventListener('submit',(e) => {
     const author = document.querySelector('#author').value
     const isbn = document.querySelector('#isbn').value
 
-    const book = new Book(title,author,isbn)
-    console.log(book)
+    //validation
+    if(title === '' || author ==='' || isbn ===''){
+        showAlert('please fill the details','danger')
+    }else{
+        const book = new Book(title,author,isbn)
+        console.log(book)
     //Add book to UI
     addBookToList(book)
 
+    //shiw success message
+    showAlert('book added successfully','success')
+
     //clear fields
     clearField()
+    }
+    
 })
 // delete the fields
 document.querySelector('#book-list').addEventListener('click',(e) => {
     deleteBooks(e.target)
+
+    showAlert('book removed','info')
+
 })
