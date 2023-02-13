@@ -6,39 +6,53 @@ class Book{
         this.isbn = isbn
     }
 }
+
 function displayBooks() {
     const storeBooks = [
-            {
-                title:'Book one',
-                author:'John doe',
-                isbn:'#2435'
-            },
-            {
-                title:'Book Two',
-                author:'Alex Carey',
-                isbn:'#8768'
-            }
-        ];
+                    {
+                        title:'Book one',
+                        author:'John doe',
+                        isbn:'#2435'
+                    },
+                    {
+                        title:'Book Two',
+                        author:'Alex Carey',
+                        isbn:'#8768'
+                    }
+            
+                ];      
         for(let i = 0; i < storeBooks.length; i++){
             const book = storeBooks[i]
             console.log(storeBooks[1])
-            const list = document.querySelector('#book-list')
-            const row = document.createElement('tr')
-            row.innerHTML = `
-            <td>${book.title}</td>i
-            <td>${book.author}</td>
-            <td>${book.isbn}</td>
-            <td><a href="#" class="btn btn-danger btn-sm delete">Delete</a></td>`;
-            list.appendChild(row);
-        }
+            addBookToList(book)
+        } 
+}
+
+function addBookToList(book) {
+    const list = document.querySelector('#book-list')
+    const row = document.createElement('tr')
+    row.innerHTML = `
+    <td>${book.title}</td>
+    <td>${book.author}</td>
+    <td>${book.isbn}</td>
+    <td><a herf="#" class="btn btn-danger btn-sm delete">Remove</a></td>
+    `
+    list.appendChild(row)
+}
+  
+function deleteBooks(el){
+    if(el.classList.contains('delete')){
+        el.parentElement.parentElement.remove()
     }
-    function addBookToList() {
-        const list = document.querySelector('#book-list')
-        consar row = 
-    }
+}
+function clearField() {
+    document.querySelector('#title').value = ''
+    document.querySelector('#author').value = ''
+    document.querySelector('#isbn').value = ''
+}
 
 //Event : display books
-document.addEventListener('DOMContentLoaded', UI.displayBooks)
+document.addEventListener('DOMContentLoaded',displayBooks())
 
 //Add A book
 document.querySelector('#book-form').addEventListener('submit',(e) => {
@@ -52,4 +66,11 @@ document.querySelector('#book-form').addEventListener('submit',(e) => {
     console.log(book)
     //Add book to UI
     addBookToList(book)
+
+    //clear fields
+    clearField()
+})
+// delete the fields
+document.querySelector('#book-list').addEventListener('click',(e) => {
+    deleteBooks(e.target)
 })
