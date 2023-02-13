@@ -8,24 +8,14 @@ class Book{
 }
 
 function displayBooks() {
-    const storeBooks = [
-                    {
-                        title:'Book one',
-                        author:'John doe',
-                        isbn:'#2435'
-                    },
-                    {
-                        title:'Book Two',
-                        author:'Alex Carey',
-                        isbn:'#8768'
-                    }
-            
-                ];      
-        for(let i = 0; i < storeBooks.length; i++){
-            const book = storeBooks[i]
-            console.log(storeBooks[1])
-            addBookToList(book)
-        } 
+    const storeBooks = getBooks()    
+    console.log(storeBooks)
+    for(let i = 0; i < storeBooks.length; i++){
+        const book = storeBooks[i]
+        console.log(storeBooks[i])
+        addBookToList(book)
+    } 
+
 }
 
 function addBookToList(book) {
@@ -63,6 +53,35 @@ function clearField() {
     document.querySelector('#isbn').value = ''
 }
 
+function getBooks() {
+    let books;
+    if(localStorage.getItem('books') === null) {
+        console.log(books,'boosks')
+        books = []
+
+    }else {
+        books = localStorage.getItem('books')
+        console.log(books)
+    }
+    return books;
+}
+
+function addBook(book) {
+    const books = getBooks();
+    books.push(book)
+    localStorage.setItem('books',JSON.stringify('books'))
+}
+
+function removeBook(isbn) {
+    const books = getBooks()
+    books.forEach((book, index) => {
+        if(book.isbn === isbn){
+            book.splice(index,1)
+        }
+    })
+    localStorage.setItem('books', JSON.stringify(books))
+}
+
 //Event : display books
 document.addEventListener('DOMContentLoaded',displayBooks())
 
@@ -82,6 +101,9 @@ document.querySelector('#book-form').addEventListener('submit',(e) => {
         console.log(book)
     //Add book to UI
     addBookToList(book)
+
+    //add book to store
+    addBook()
 
     //shiw success message
     showAlert('book added successfully','success')
